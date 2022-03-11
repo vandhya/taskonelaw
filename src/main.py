@@ -49,7 +49,8 @@ def request_token(
 @app.post('/oauth/resource')
 def oauth_resource(response:Response, request:Request, db: Session = Depends(get_db)):
     authorization = request.headers.get('Authorization')
-    token_type, access_token = authorization.split(' ')
+    if authorization:
+        token_type, access_token = authorization.split(' ')
     token = crud.get_token_by_access_token(db=db,access_token=access_token)
     if token:
         user = token.owner
